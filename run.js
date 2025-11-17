@@ -129,7 +129,9 @@ frame.onload = function()
 	if (!ctx) return;
 	fw = frame.contentWindow;
 	var xhr = new XMLHttpRequest();
+	xhr.open('GET', 'love.js');
 	xhr.open('GET', 'love.wasm');
+	xhr.open('GET', 'love.worker.js');
 	xhr.onprogress = function(e)
 	{
 		if (!e.lengthComputable || ctx.pCnt++ < 5) return;
@@ -144,9 +146,16 @@ frame.onload = function()
 	{
 		if (xhr.status != 200) { Abort(TXT.DLERROR + ' Status: ' + xhr.statusText); return; }
 		Msg(TXT.PARSE);
-		let s = function()
+		setTimeout(function()
 		{
-			// if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
+			Log('Starting...');
+			fw.Module = { TOTAL_MEMORY: 1048576*($('memory').value*1||24), TOTAL_STACK: 1048576*($('stack').value*1||2), currentScriptUrl: '-' };
+			var s = fw.document.createElement('script'), de = fw.document.documentElement;
+			s.textContent = xhr.response;
+			de.appendChild(s);
+			de.removeChild(s);
+			xhr = s = de = xhr.response = s.textContent = null;
+			//if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
 			if (code)
 			{
 				code.AddSampleAssetFiles(fw.FS);
@@ -172,17 +181,7 @@ frame.onload = function()
 				GetFile(0);
 			}
 			else DoExecute('/p');
-		};
-		setTimeout(function() {
-			Log('Starting...');
-			fw.Module = { TOTAL_MEMORY: 1048576*($('memory').value*1||24), TOTAL_STACK: 1048576*($('stack').value*1||2), currentScriptUrl: '-' };
-			var s = fw.document.createElement('script'), de = fw.document.documentElement;
-			s.textContent = xhr.response;
-			de.appendChild(s);
-			de.removeChild(s);
-			xhr = s = de = xhr.response = s.textContent = null;
-			s();
-		}, 50);
+		},50);
 	};
 	xhr.send();
 };
@@ -212,6 +211,7 @@ if (code)
 }
 
 })();
+
 
 
 
