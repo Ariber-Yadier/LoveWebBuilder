@@ -146,9 +146,7 @@ frame.onload = function()
 		Msg(TXT.PARSE);
 		let s = function()
 		{
-			if (!fw.shouldRunNow) { setTimeout(s, 100); }
-			else {
-			if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
+			// if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
 			if (code)
 			{
 				code.AddSampleAssetFiles(fw.FS);
@@ -174,7 +172,6 @@ frame.onload = function()
 				GetFile(0);
 			}
 			else DoExecute('/p');
-			};
 		};
 		setTimeout(function() {
 			Log('Starting...');
@@ -215,6 +212,7 @@ if (code)
 }
 
 })();
+
 
 
 
