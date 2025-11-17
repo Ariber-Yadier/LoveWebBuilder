@@ -129,7 +129,7 @@ frame.onload = function()
 	if (!ctx) return;
 	fw = frame.contentWindow;
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'love.js');
+	xhr.open('GET', 'love.wasm');
 	xhr.onprogress = function(e)
 	{
 		if (!e.lengthComputable || ctx.pCnt++ < 5) return;
@@ -215,6 +215,7 @@ if (code)
 }
 
 })();
+
 
 
 
