@@ -146,15 +146,8 @@ frame.onload = function()
 		Msg(TXT.PARSE);
 		let s = function()
 		{
-			if (!fw.shouldRunNow) { window.setTimeout(s, 100); }
+			if (!fw.shouldRunNow) { setTimeout(s, 100); }
 			else {
-			Log('Starting...');
-			fw.Module = { TOTAL_MEMORY: 1048576*($('memory').value*1||24), TOTAL_STACK: 1048576*($('stack').value*1||2), currentScriptUrl: '-' };
-			var s = fw.document.createElement('script'), de = fw.document.documentElement;
-			s.textContent = xhr.response;
-			de.appendChild(s);
-			de.removeChild(s);
-			xhr = s = de = xhr.response = s.textContent = null;
 			if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
 			if (code)
 			{
@@ -183,7 +176,16 @@ frame.onload = function()
 			else DoExecute('/p');
 			};
 		};
-		setTimeout(s, 50);
+		setTimeout(function() {
+			Log('Starting...');
+			fw.Module = { TOTAL_MEMORY: 1048576*($('memory').value*1||24), TOTAL_STACK: 1048576*($('stack').value*1||2), currentScriptUrl: '-' };
+			var s = fw.document.createElement('script'), de = fw.document.documentElement;
+			s.textContent = xhr.response;
+			de.appendChild(s);
+			de.removeChild(s);
+			xhr = s = de = xhr.response = s.textContent = null;
+			s();
+		}, 50);
 	};
 	xhr.send();
 };
@@ -213,5 +215,6 @@ if (code)
 }
 
 })();
+
 
 
