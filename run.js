@@ -153,7 +153,7 @@ frame.onload = function()
 			de.appendChild(s);
 			de.removeChild(s);
 			xhr = s = de = xhr.response = s.textContent = null;
-			if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
+			// if (!fw.shouldRunNow) { Abort('Unknown startup error, check developer console (F12)'); return; }
 			if (code)
 			{
 				code.AddSampleAssetFiles(fw.FS);
@@ -209,3 +209,4 @@ if (code)
 }
 
 })();
+
